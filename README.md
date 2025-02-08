@@ -1,10 +1,12 @@
 For start the server
 
-go install github.com/cosmtrek/air@latest
+1. go install github.com/cosmtrek/air@latest
+
+2. export PATH=$PATH:$(go env GOPATH)/bin
+
+3. source ~/.zshrc
 
 
-export PATH=$PATH:$(go env GOPATH)/bin
-source ~/.zshrc
-air
+4. air
 
 

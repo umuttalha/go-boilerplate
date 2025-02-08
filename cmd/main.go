@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"go-boilerplate/internal/config"
+	"go-boilerplate/internal/database"
 	"go-boilerplate/internal/handler"
 	"go-boilerplate/internal/repository"
 	"go-boilerplate/internal/service"
@@ -18,6 +19,11 @@ func main() {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
 	defer db.Close()
+
+	// Run migrations
+	if err := database.RunMigrations(db, "./migrations"); err != nil {
+		log.Fatalf("Failed to run migrations: %v", err)
+	}
 
 	repo := repository.NewRepository(db)
 	svc := service.NewService(repo)

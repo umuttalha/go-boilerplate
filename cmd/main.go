@@ -7,6 +7,7 @@ import (
 	"go-boilerplate/internal/config"
 	"go-boilerplate/internal/database"
 	"go-boilerplate/internal/handler"
+	"go-boilerplate/internal/middleware"
 	"go-boilerplate/internal/repository"
 	"go-boilerplate/internal/service"
 )
@@ -29,13 +30,23 @@ func main() {
 	svc := service.NewService(repo)
 	h := handler.NewHandler(svc)
 
+	// Initialize session store
+	middleware.InitSession()
+
 	// Register routes
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", h.HealthCheck)
+	mux.HandleFunc("/login", h.Login)
+	mux.HandleFunc("/logout", h.Logout)
+	mux.HandleFunc("/register", h.Register)
+	mux.HandleFunc("/protected", h.Protected)
+
+	// Wrap mux with session middleware
+	handler := middleware.AuthMiddleware(svc)(mux)
 
 	srv := &http.Server{
 		Addr:    ":" + cfg.ServerPort,
-		Handler: mux,
+		Handler: handler,
 	}
 
 	log.Printf("Server starting on port %s", cfg.ServerPort)

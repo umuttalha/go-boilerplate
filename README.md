@@ -6,6 +6,9 @@ For start the server
 
 3. source ~/.zshrc
 
+export PATH=$PATH:$(go env GOPATH)/bin
+source ~/.zshrc
+
 
 4. air
 

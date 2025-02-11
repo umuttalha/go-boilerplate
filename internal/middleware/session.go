@@ -17,7 +17,6 @@ func InitSession() {
 	Store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 	Store.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   86400 * 7, // 7 days
 		HttpOnly: true,
 	}
 }
